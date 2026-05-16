@@ -1632,8 +1632,7 @@
                     tasks = tasks.filter(t => {
                         const hasDL = t.labels && t.labels.includes("类型_截止");
                         const localDateStr = t.due && t.due.date ? t.due.date.split('T')[0] : "";
-                        const isFuture = localDateStr >= todayStr;
-                        return hasDL && isFuture;
+                        return hasDL && localDateStr !== "";
                     });
                     
                     if (tasks.length === 0) {
@@ -1665,7 +1664,7 @@
                             
                             // Visual color indicators based on urgency
                             let daysColor = t._daysLeft <= 3 ? '#ff6b6b' : (t._daysLeft <= 7 ? '#f6d365' : '#888');
-                            let daysText = t._daysLeft === 0 ? '今天截止' : `剩 ${t._daysLeft} 天`;
+                            let daysText = t._daysLeft === 0 ? '今天截止' : (t._daysLeft < 0 ? `超时 ${Math.abs(t._daysLeft)} 天` : `剩 ${t._daysLeft} 天`);
 
                             // Generate widget label badges with custom order: Time → Location → Role → Type
                             const locationLabels = ["地点_办公室", "地点_健身房", "地点_良乡家", "地点_六里桥家", "地点_任意"];
